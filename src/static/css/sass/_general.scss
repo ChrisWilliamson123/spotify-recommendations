@@ -1,0 +1,25 @@
+body {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 20px;
+  margin: 0;
+  color: black;
+
+  h1 {
+      font-size: 48px;
+      margin: 25px 0;
+  }
+
+  h2 {
+      font-size: 36px;
+      margin: 15px 0;
+  }
+
+  a {
+      border-radius: 8px;
+      padding: 10px 20px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: black;
+      display: inline-block;
+  }
+}

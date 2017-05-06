@@ -1,0 +1,14 @@
+#welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    #welcome-box {
+        text-align: center;
+
+        h1 {
+            margin-top: 0;
+        }
+    }
+}
