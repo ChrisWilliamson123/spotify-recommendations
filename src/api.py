@@ -2,6 +2,7 @@ import requests, settings
 from flask import current_app as app
 from urllib.parse import quote
 
+
 class SpotifyAPI:
     access_token = ''
     client_id = settings.CLIENT_ID
@@ -10,6 +11,7 @@ class SpotifyAPI:
     scopes = 'playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-follow-modify user-follow-read user-library-read user-library-modify user-read-private user-read-birthdate user-read-email user-top-read'
     login_base_url = 'https://accounts.spotify.com/authorize'
     redirect_uri = settings.REDIRECT_URI
+    api_base_url = 'http://api.spotify.com'
 
     def get_login_url(self):
         redirect_uri = quote(self.redirect_uri, safe=[])
@@ -30,12 +32,22 @@ class SpotifyAPI:
             'client_id': self.client_id,
             'client_secret': self.client_secret,
         }
-        response  = requests.post(token_endpoint, data=data)
+        response = requests.post(token_endpoint, data=data)
         self.access_token = response.json()['access_token']
 
     def get_user_object(self):
-        base_url = 'https://api.spotify.com/v1/me'
-        response  = requests.get(base_url, headers={'Authorization': 'Bearer %s' % self.access_token})
+        url = 'https://api.spotify.com/v1/me'
+        response = requests.get(url, headers={'Authorization': 'Bearer %s' % self.access_token})
+        return response.json()
+
+    def get_user_albums(self):
+        url = '%s/v1/me/albums' % self.api_base_url
+        response = requests.get(url, headers={'Authorization': 'Bearer %s' % self.access_token})
+        return [a['album'] for a in response.json()['items']]
+
+    def get_user_artists(self):
+        url = '%s/v1/me/following?type=artist' % self.api_base_url
+        response = requests.get(url, headers={'Authorization': 'Bearer %s' % self.access_token})
         return response.json()
 
 def test_api():
